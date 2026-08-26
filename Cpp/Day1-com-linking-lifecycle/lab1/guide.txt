@@ -1,0 +1,14 @@
+Preprocessing:
+clang++ -E main.cpp -o main.i
+
+Compilation:
+clang++ -S main.cpp -o main.s
+
+Assembling:
+clang++ -c main.cpp -o main.o
+
+Linking:
+clang++ main.o -o my_app
+
+Run:
+./my_app
