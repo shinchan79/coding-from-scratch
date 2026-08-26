@@ -1,0 +1,7 @@
+{
+  "name": "lab4-gtest",
+  "version": "1.0.0",
+  "dependencies": [
+    "gtest"
+  ]
+}
