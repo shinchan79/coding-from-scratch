@@ -7,4 +7,7 @@ valgrind ./build/app_valgrind
 # Install valgrind:
 Valgrind do not support ARM64 arch of Apple, alternative command:
 
-leaks -atExit -- ./build/app_valgrindßßß
+leaks -atExit -- ./build/app_valgrind
+
+Note: git rm -r --cached .
+      git add .

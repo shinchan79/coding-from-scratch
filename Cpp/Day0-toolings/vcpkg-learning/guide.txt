@@ -1,0 +1,13 @@
+brew install pkg-config
+xcode-select --install
+
+cd ~
+git clone https://github.com/microsoft/vcpkg.git
+
+rm -rf build
+
+cmake -B build -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+cmake --build build
+
+./build/app_fmt
