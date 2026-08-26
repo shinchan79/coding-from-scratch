@@ -1,0 +1,26 @@
+# JetBrains IDE (CLion, IntelliJ, v.v.)
+.idea/
+*.iml
+*.iws
+
+# CMake & Build artifacts
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+
+# Compiled Object files & Binaries
+*.o
+*.out
+*.bin
+app_asan
+app_valgrind
+hello_app
+
+# macOS specific
+.DS_Store
