@@ -1,0 +1,3 @@
+/Users/yentrinh/CLionProjects/coding-from-scratch/Cpp/Day0-toolings/cmake-learning/build/CMakeFiles/hello_app.dir
+/Users/yentrinh/CLionProjects/coding-from-scratch/Cpp/Day0-toolings/cmake-learning/build/CMakeFiles/edit_cache.dir
+/Users/yentrinh/CLionProjects/coding-from-scratch/Cpp/Day0-toolings/cmake-learning/build/CMakeFiles/rebuild_cache.dir

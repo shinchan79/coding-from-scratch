@@ -1,0 +1,10 @@
+cmake -B build
+cmake --build build
+./build/app_asan
+
+valgrind ./build/app_valgrind
+
+# Install valgrind:
+Valgrind do not support ARM64 arch of Apple, alternative command:
+
+leaks -atExit -- ./build/app_valgrindßßß
