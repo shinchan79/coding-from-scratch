@@ -1,0 +1,9 @@
+* **Stack Frame (Khung xếp chồng):** Mỗi khi bạn gọi một hàm, HĐH cấp cho hàm đó một khối nhớ tạm thời trên Stack gọi là Stack Frame. Nó chứa: tham số truyền vào, địa chỉ trả về (để chạy xong biết đường về hàm `main`), và các biến cục bộ (như `localArray`). Khi hàm chạy xong, Frame này tự động bị hủy để nhường chỗ cho hàm khác. Đặc điểm vật lý của Stack là nó thường **phát triển ngược** (địa chỉ RAM của Frame sau sẽ nhỏ hơn Frame trước).
+* **Stack Overflow (Tràn bộ nhớ Stack):** Khác với Heap (dung lượng bằng cả thanh RAM), Stack có kích thước cố định và rất nhỏ (khoảng 8MB trên Linux/Mac, 1MB trên Windows). Khi bạn gọi đệ quy vô hạn, các Stack Frame chồng lên nhau liên tục. Hết 8MB đó, chương trình chạm vào vùng nhớ cấm và lập tức bị hệ điều hành tiêu diệt (Segmentation Fault).
+* **Calling Conventions (Quy ước gọi hàm):** Đây là hợp đồng giữa "Người gọi" (Caller) và "Kẻ bị gọi" (Callee) về việc ai sẽ chịu trách nhiệm dọn dẹp Stack Frame, và tham số được truyền qua RAM hay qua thanh ghi CPU.
+* `__cdecl`: Caller tự dọn dẹp. Phù hợp cho các hàm có số lượng tham số biến đổi (như `printf`).
+* `__stdcall`: Callee tự dọn dẹp trước khi thoát. Dung lượng file binary sinh ra sẽ nhỏ hơn. Chuẩn mực của Win32 API.
+* `__fastcall`: Ép 2-3 tham số đầu tiên nhét thẳng vào thanh ghi CPU (Register) thay vì RAM, giúp tăng tốc độ gọi hàm.
+
+
+* **Sự thật trên MacBook của bạn (Kiến trúc 64-bit):** Trên các chip 64-bit (x86_64, ARM64/Apple Silicon), bộ 3 calling conventions cổ điển này **bị trình biên dịch phớt lờ hoàn toàn**. Tại sao? Vì kiến trúc 64-bit có quá nhiều thanh ghi CPU dư thừa. Nó dùng một chuẩn ABI chung: mặc định 6-8 tham số đầu tiên *luôn luôn* được truyền qua thanh ghi (như `__fastcall`), phần còn lại mới đẩy vào Stack. Do đó, HĐH và Compiler tự lo phần tối ưu này, lập trình viên không cần can thiệp nữa.
