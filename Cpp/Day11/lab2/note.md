@@ -1,0 +1,8 @@
+* **Placement new:** Lệnh `new` thông thường làm 2 việc: (1) Xin HĐH cấp RAM, (2) Gọi Constructor. Kỹ thuật `Placement new` chẻ đôi quy trình này ra: Bạn tự chuẩn bị sẵn một mảng RAM (bằng Stack hoặc cấp phát sẵn 1 cục khổng lồ), sau đó dùng `new (địa_chỉ)` để ép Constructor khởi tạo object đè thẳng lên vùng nhớ đó.
+* *Tác dụng:* Zero overhead cấp phát bộ nhớ. Đây là kỹ thuật cốt lõi đằng sau mọi Memory Pool của Game Engine và hệ thống High-Frequency Trading.
+* *Luật bất thành văn:* Không bao giờ được dùng `delete` với placement new (vì bạn đâu có xin OS). Bạn phải tự gọi thủ công hàm hủy `obj->~Type()`.
+
+
+* **Wild Pointers (Con trỏ hoang dã):** Là con trỏ vừa sinh ra nhưng không gán giá trị (uninitialized). Nó sẽ tự động trỏ bừa bãi vào một vùng nhớ ngẫu nhiên chứa rác. Chạm vào nó (dereference) giống như chơi cò quay Nga, chương trình có thể sập ngay lập tức hoặc ghi đè hỏng dữ liệu hệ thống.
+* **Dangling Pointers (Con trỏ lơ lửng):** Bộ nhớ đã bị trả lại cho HĐH bằng lệnh `delete`, nhưng con trỏ vẫn còn nhớ "địa chỉ nhà cũ". Nếu HĐH lấy vùng nhớ đó cấp cho một biến khác, và bạn vô tình dùng lại con trỏ cũ, bạn sẽ sửa nhầm dữ liệu của biến kia (Use-after-free). *Khắc phục:* Cứ `delete` xong là phải gán `ptr = nullptr`.
+* **Memory Leaks (Rò rỉ bộ nhớ):** Vùng nhớ vẫn nằm đó, HĐH vẫn đang giữ chỗ cho bạn, nhưng bạn lỡ tay xóa mất con trỏ (hoặc gán con trỏ đi chỗ khác). Bạn vĩnh viễn mất quyền truy cập vào vùng nhớ đó để giải phóng, làm RAM cạn kiệt dần. Bộ cờ ASan (AddressSanitizer) trong CMake sẽ "tóm cổ" ngay lập tức những lỗi này khi chương trình kết thúc.

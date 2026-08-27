@@ -1,0 +1,6 @@
+* **Bảng quản lý bộ nhớ OS (OS Memory Manager Overhead):** `new` và `delete` không phải là lệnh CPU thông thường. Mỗi lần gọi, bạn đang yêu cầu Hệ điều hành dừng lại, lục lọi trong "Bảng quản lý vùng nhớ trống" (Freelist) để tìm một khoảng trống phù hợp, sau đó đánh dấu là đã dùng. Quá trình này tốn hàng trăm đến hàng ngàn chu kỳ CPU. Benchmark trong lab sẽ cho bạn thấy gọi `new` lẻ tẻ 1 triệu lần chậm hơn hàng chục lần so với việc xin HĐH một cục bộ nhớ lớn (`new int[1000000]`) rồi tự chia chác.
+* **Memory Fragmentation (Phân mảnh bộ nhớ):** Vùng nhớ Heap giống như một bãi đỗ xe. Nếu bạn cấp phát (đỗ xe) và thu hồi (lấy xe ra) liên tục với nhiều kích thước khác nhau, bãi đỗ sẽ xuất hiện vô số khoảng trống rải rác (như lỗ phô mai Thụy Sĩ).
+* *Hệ quả:* Tổng RAM trống có thể còn rất nhiều (ví dụ 10MB), nhưng vì chúng bị xé lẻ thành các mảnh 1KB, HĐH sẽ từ chối cấp phát (quăng lỗi `std::bad_alloc`) nếu bạn xin một cục liên tục 2KB. Đây gọi là **External Fragmentation**.
+
+
+* **Giải pháp (Tiền đề cho bài sau):** Trong lập trình hiệu năng cao (Game Engine, HFT), người ta rất sợ lệnh `new`. Họ giải quyết bằng cách xin OS một vùng RAM khổng lồ ngay từ lúc bật app (Pre-allocation), sau đó dùng **Placement new** (kỹ thuật chèn object vào vùng nhớ đã có sẵn) để tự quản lý, không làm phiền đến OS nữa.
