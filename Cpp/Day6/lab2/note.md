@@ -1,0 +1,6 @@
+* **`T` (Pass-by-value):** Dữ liệu được copy ra một vùng nhớ mới. Rất tốt cho các kiểu nguyên thủy (`int`, `float`, con trỏ) vì chúng chui lọt vào các thanh ghi (registers) của CPU, tốc độ cực nhanh. Khắc tinh của các object lớn (`std::string`, `vector`, `class`) vì gây ra Deep Copy lãng phí bộ nhớ và thời gian.
+* **`const T&` (Tiêu chuẩn vàng):** Mọi tham số không phải kiểu nguyên thủy đều nên truyền bằng cách này mặc định. Nó chỉ tạo ra một bí danh (alias) trỏ tới object gốc dưới dạng read-only. Hiệu năng tuyệt đối (không copy) và an toàn tuyệt đối (không lo bị hàm khác sửa bậy).
+* **`T&` (Tham chiếu):** Chỉ dùng khi mục đích chính của hàm là **thay đổi/cập nhật** dữ liệu của chính object được truyền vào (ví dụ: hàm `swap(T& a, T& b)`).
+* **`T*` (Con trỏ) vs `T&` (Tham chiếu):**
+* Luôn ưu tiên dùng Tham chiếu (`T&`) vì tham chiếu **không bao giờ null**. Mã nguồn sẽ sạch hơn vì không cần viết lệnh `if (ptr != nullptr)` để kiểm tra.
+* Chỉ dùng Con trỏ (`T*`) trong 2 trường hợp: Giao tiếp với thư viện C cũ, hoặc khi tham số đó là **tùy chọn (optional)** — nghĩa là người gọi hàm được quyền ném `nullptr` vào nếu họ không muốn cung cấp thông tin đó.

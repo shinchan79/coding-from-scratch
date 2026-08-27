@@ -1,0 +1,7 @@
+* **Truyền qua tham số - "Out Parameter" (Kiểu truyền thống):** Khai báo một biến rỗng ở ngoài (tốn 1 lần gọi default constructor), sau đó truyền tham chiếu vào hàm để hàm nhồi dữ liệu. Code chạy nhanh nhưng dài dòng, khó đọc và làm hỏng tính tự nhiên của hàm (hàm vốn sinh ra để "trả về" kết quả).
+* **Trả về giá trị (Return-by-value):** Viết kiểu `BigData obj = generateModern()`. Nhìn bằng mắt thường, ai cũng sợ hàm sẽ tạo một biến tạm `temp`, sau đó phải tốn thêm 1 lần Deep Copy (Copy Constructor) cực kỳ đắt đỏ để copy dữ liệu từ `temp` ra `obj`.
+* **Sự thật về Copy Elision & RVO (Return Value Optimization):** Trình biên dịch C++ cực kỳ thông minh. Nó nhận ra biến `temp` đằng nào cũng chỉ dùng để ném dữ liệu ra ngoài cho `obj2`. Thay vì tạo `temp` rồi copy sang `obj2`, compiler lén "bẻ lái", cho phép hàm `generateModern()` khởi tạo dữ liệu **trực tiếp thẳng lên vùng nhớ của `obj2**`.
+* Kết quả: Khi chạy code, ở phần Modern, bạn sẽ thấy **chỉ có 1 lệnh Default Constructor duy nhất** được gọi. Không hề có Copy hay Move nào xảy ra. Hiệu năng tuyệt đối ngang ngửa kiểu truyền thống, nhưng code sạch hơn bội phần.
+
+
+* **Quy tắc:** Bắt đầu từ C++17, Copy Elision (đối với R-value) trở thành **bắt buộc** ở mức tiêu chuẩn ngôn ngữ, không còn phụ thuộc vào việc compiler có thích tối ưu hay không. Do đó, hãy tự tin trả về object lớn bằng `return value`, đừng dùng Out Parameter trừ khi bạn muốn tận dụng lại vùng nhớ của một object đã có sẵn từ trước.
