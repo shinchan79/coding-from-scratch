@@ -1,0 +1,5 @@
+* **Đo thời gian Sort vs Chưa Sort (Branch Prediction):** CPU có một bộ phận dự đoán nhánh. Với mảng chưa sort (dữ liệu ngẫu nhiên), CPU đoán sai liên tục, mỗi lần sai phải xóa đường ống lệnh (Pipeline Flush) làm giảm hiệu năng nghiêm trọng. Khi mảng đã được sort, CPU đoán sai cực ít (chỉ 1 lần ở ranh giới số 128), do đó tốc độ lọc dữ liệu tăng vọt một cách kỳ diệu dù code hoàn toàn y hệt.
+* **Thuộc tính `[[likely]]` / `[[unlikely]]` (C++20):**
+* Nhiều người hiểu lầm rằng 2 thuộc tính này giúp CPU dự đoán nhánh (Branch Prediction) tốt hơn lúc chạy. Sự thật là CPU hiện đại tự học hỏi (dynamic prediction) rất thông minh và không cần bạn dạy.
+* **Tác dụng thật sự nằm ở Compiler (Trình biên dịch):** Khi bạn đánh dấu `[[likely]]`, compiler sẽ sắp xếp các dòng mã máy (Assembly) của nhánh đó nằm nối tiếp thẳng hàng với vòng lặp. Còn mã máy của nhánh `[[unlikely]]` sẽ bị vứt ra một vùng nhớ rất xa.
+* **Lợi ích:** Giúp tối ưu hóa Instruction Cache (I-Cache). CPU kéo một cục lệnh vào Cache toàn là những lệnh có xác suất chạy cao nhất, không bị chật chỗ bởi những khối code xử lý lỗi hiếm gặp (như check null, check mã lỗi). Mạch chạy sẽ mượt mà hơn.

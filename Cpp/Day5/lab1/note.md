@@ -1,0 +1,7 @@
+* **If (init; condition) của C++17:** Giúp thu hẹp phạm vi vòng đời của biến. Thay vì khai báo biến `auto it` ở ngoài và để nó "sống dai" một cách thừa thãi sau khi check xong, ta nhét nó vào trong khối `if`. Ra khỏi `if` / `else`, biến tự bị hủy, mã nguồn sạch sẽ và an toàn hơn (tránh dùng nhầm).
+* **Switch-case vs If-else (Jump Tables):** Chuỗi `if-else` buộc CPU phải đi kiểm tra từng điều kiện một từ trên xuống dưới (độ phức tạp $O(N)$). Với `switch-case` (khi các `case` là các số nguyên liên tiếp hoặc gần nhau), compiler sẽ tối ưu nó thành một **Jump Table** (Bảng bước nhảy) ở mức Assembly. CPU chỉ cần làm 1 phép toán offset đơn giản để nhảy thẳng đến đoạn code tương ứng trong thời gian $O(1)$.
+* **Sự thật về Branch Prediction (Dự đoán nhánh):**
+* CPU hiện đại hoạt động theo cơ chế *Pipeline* (dây chuyền). Đang làm lệnh 1 thì đã fetch (kéo) lệnh 2 và lệnh 3 vào chờ sẵn.
+* Khi gặp lệnh `if`, CPU không biết nên kéo lệnh bên trong `if` hay bỏ qua. Để không bị khựng lại, nó sẽ **đoán** (Branch Prediction).
+* Nếu mảng **chưa sort**, dữ liệu ngẫu nhiên (lúc lớn hơn 128, lúc nhỏ hơn), CPU đoán sai liên tục (~50%). Mỗi lần đoán sai, nó phải xóa toàn bộ dây chuyền (Pipeline Flush), lùi lại và làm lại từ đầu. Rất tốn thời gian.
+* Nếu mảng **đã sort**, dữ liệu tuân theo quy luật chặt chẽ (một nửa đầu luôn nhỏ hơn 128, nửa sau luôn lớn hơn). CPU đoán `False` liên tục và đúng, sau đó đoán `True` liên tục và cũng đúng. Nhờ tỷ lệ đoán trúng gần 100%, vòng lặp chạy với tốc độ tối đa của phần cứng.
