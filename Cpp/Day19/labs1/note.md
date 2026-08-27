@@ -1,0 +1,7 @@
+* **R-value & `std::move`:** R-value đại diện cho những giá trị tạm thời không có tên tuổi hoặc định danh cố định trong bộ nhớ (như giá trị trả về từ hàm hoặc đối tượng chuẩn bị bị hủy). Hàm `std::move()` thực chất không di chuyển bất cứ dữ liệu vật lý nào; nó chỉ đơn thuần là một câu lệnh **ép kiểu (cast)** từ L-value thành R-value reference (`T&&`), bật tín hiệu cho trình biên dịch ưu tiên gọi hàm Move Constructor thay vì Copy Constructor.
+* **Move Constructor ($O(1)$ thay vì $O(N)$):**
+* *Copy Constructor* phải cấp phát một vùng nhớ mới trên Heap rồi dùng vòng lặp copy từng byte dữ liệu sang (chi phí $O(N)$, mất hàng chục mili-giây với khối lượng 100MB).
+* *Move Constructor* chỉ làm một thao tác chớp nhoáng: Nhìn sang đối tượng tạm, "trấn lột" luôn con trỏ quản lý bộ nhớ của nó gán sang cho mình, sau đó ngắt kết nối đối tượng tạm bằng cách gán con trỏ của nó về `nullptr`. Toàn bộ quá trình diễn ra trong **1 chu kỳ máy ($O(1)$)**, loại bỏ hoàn toàn việc cấp phát lại RAM.
+
+
+* **Move Assignment:** Tương tự như Move Constructor nhưng xử lý trong ngữ cảnh phép gán toán tử (`=`), yêu cầu giải phóng tài nguyên hiện tại của đối tượng đích trước khi tiến hành "trấn lột" tài nguyên từ đối tượng nguồn.
